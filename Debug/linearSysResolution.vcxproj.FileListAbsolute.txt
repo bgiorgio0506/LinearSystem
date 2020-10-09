@@ -1,0 +1,2 @@
+C:\Users\Giorgiopc\Desktop\Pisa\Geometria e Algebra Lineare\AutometedLinearSystemResolution\linearSysResolution\Debug\linearSysResolution.exe
+C:\Users\Giorgiopc\Desktop\Pisa\Geometria e Algebra Lineare\AutometedLinearSystemResolution\linearSysResolution\Debug\linearSysResolution.pdb
