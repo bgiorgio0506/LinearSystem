@@ -1,0 +1,4 @@
+﻿  linearSysResolution.cpp
+C:\Users\Giorgiopc\Desktop\Pisa\Geometria e Algebra Lineare\AutometedLinearSystemResolution\linearSysResolution\linearSysResolution.cpp(62,19): warning C4244: 'inizializzazione': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\Giorgiopc\Desktop\Pisa\Geometria e Algebra Lineare\AutometedLinearSystemResolution\linearSysResolution\linearSysResolution.cpp(67,33): warning C4244: '=': conversione da 'double' a 'int'. Possibile perdita di dati.
+C:\Users\Giorgiopc\Desktop\Pisa\Geometria e Algebra Lineare\AutometedLinearSystemResolution\linearSysResolution\linearSysResolution.cpp(167,53): error C2078: troppi inizializzatori
