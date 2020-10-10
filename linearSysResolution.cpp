@@ -3,174 +3,185 @@
 
 //include libs
 #include <iostream>
+#include <math.h>
+
+//N is the maximum number of unkowns possible NOTE: Tested with 3 unknowns
+#define N 10
 using namespace std;
 
-#define N 5
 
-//prototypes
-void print(double mat[N][N+1]);
+class Matrix {
+    public: 
+        float mat[N][N + 1];
+        int dim; 
 
-// function to reduce matrix to r.e.f.  Returns a value to  
-// indicate whether matrix is singular or not 
-int forwardElim(double mat[N][N + 1]);
+        /* for dim equations there will be dim unknowns which will be stored in array 'res' */
+        float res[N];
 
-// function to calculate the values of the unknowns 
-void backSub(double mat[N][N + 1]);
-
-//function to get content matrix
-void gaussianElimination(double mat[N][N+1]);
-
-//swap_raw operation
-void swap_row(double mat[N][N + 1]); 
-
-int forwardElim(double mat[N][N + 1]);
-
-// function to calculate the values of the unknowns 
-void backSub(double mat[N][N + 1]); 
-
-
-
-//Functions
-void print(double mat[N][N+1]) {
-    int i,j; 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j <= N; j++) {
-            cout << "Ecco l'elemento caricato nella posizione [" << i + 1 << ":" << j + 1 << "]" << ": " << mat[i][j] << endl;
+        Matrix() {
+            cout << "Matrice inizialied waiting function to run" << endl;
+            system("cls");
         }
-    }
-}
 
-
-// function for elementary operation of swapping two rows
-void swap_row(double mat[N][N + 1], int i, int j)
-{
-    for (int k = 0; k <= N; k++)
-    {
-        double temp = mat[i][k];
-        mat[i][k] = mat[j][k];
-        mat[j][k] = temp;
-    }
-}
-
-// function to reduce matrix to r.e.f. 
-int forwardElim(double mat[N][N + 1])
-{
-    for (int k = 0; k < N; k++)
-    {
-        // Initialize maximum value and index for pivot 
-        int i_max = k;
-        int v_max = mat[i_max][k];
-
-        /* find greater amplitude for pivot if any */
-        for (int i = k + 1; i < N; i++)
-            if (abs(mat[i][k]) > v_max)
-                v_max = mat[i][k], i_max = i;
-
-        /* if a prinicipal diagonal element  is zero,
-         * it denotes that matrix is singular, and
-         * will lead to a division-by-zero later. */
-        if (!mat[k][i_max])
-            return k; // Matrix is singular 
-
-        /* Swap the greatest value row with current row */
-        if (i_max != k)
-            swap_row(mat, k, i_max);
-
-
-        for (int i = k + 1; i < N; i++)
+        void LoadBidimensionalArray(int uniqueDimension)
         {
-            /* factor f to set current row kth element to 0,
-             * and subsequently remaining kth column to 0 */
-            double f = mat[i][k] / mat[k][k];
-
-            /* subtract fth multiple of corresponding kth
-               row element*/
-            for (int j = k + 1; j <= N; j++)
-                mat[i][j] -= mat[k][j] * f;
-
-            /* filling lower triangular matrix with zeros*/
-            mat[i][k] = 0;
+            dim = uniqueDimension;
+            int i, j;
+            for (i = 0; i < dim; i++)
+            {
+                for (j = 0; j < dim+1; j++)
+                {
+                    cout << "Inserire numero da caricare nella matrice nella posizione [" << i + 1 << ";" << j + 1 << "]" << endl;
+                    cin >> mat[i][j];
+                }
+            }
         }
 
-        //print(mat);        //for matrix state 
-    }
-    //print(mat);            //for matrix state 
-    return -1;
-}
-
-// function to calculate the values of the unknowns 
-void backSub(double mat[N][N + 1])
-{
-    double x[N];  // An array to store solution 
-
-    /* Start calculating from last equation up to the
-       first */
-    for (int i = N - 1; i >= 0; i--)
-    {
-        /* start with the RHS of the equation */
-        x[i] = mat[i][N];
-
-        /* Initialize j to i+1 since matrix is upper
-           triangular*/
-        for (int j = i + 1; j < N; j++)
+        int LoadDim()
+            /* if no of equations are n then size of augmented matrix will be n*n+1. So here we are declaring 2d array 'mat' of size n+n+1 */
         {
-            /* subtract all the lhs values
-             * except the coefficient of the variable
-             * whose value is being calculated */
-            x[i] -= mat[i][j] * x[j];
+            do
+            {
+                cout << "Inserisci dimensione: ";
+                cin >> dim;
+                if (dim >= N)
+                {
+                    cout << "Error dimension too big error" << endl;
+                }
+            } while (dim > N);
+
+            return dim;
         }
 
-        /* divide the RHS by the coefficient of the
-           unknown being calculated */
-        x[i] = x[i] / mat[i][i];
-    }
 
-    cout<<"\nSolution for the system:\n";
-    for (int i = 0; i < N; i++)
-       cout<<x[i]<<"\n";
-}
+        //display matrix
+        void DisplayBidimensional()
+        {
+            int i, j;
+            for (i = 0; i < dim; i++)
+            {
+                for (j = 0; j < dim+1; j++)
+                {
+                    cout << "\nEcco l'elemento caricato nella posizione [" << i + 1 << ":" << j + 1 << "]"
+                        << ": " << mat[i][j] << endl;
+                }
+            }
+            cout << "*********End Matrice Print**********" << endl;
+        }
+
+        //Swap Raw operation 
+        void sawpRow() {
+            int i, j, k;
+            for (i = 0; i < dim; i++)
+            {
+                for (j = i + 1; j < dim; j++)
+                {
+                    if (abs(mat[i][i]) < abs(mat[j][i]))
+                    {
+
+                        for (k = 0; k < dim + 1; k++)
+                        {
+                            cout << "\nSwapping position[" << i << ";" << k << "] with position[" << j << ";" << k << "]\n";
+                            /* swapping mat[i][k] and mat[j][k] */
+                            mat[i][k] = mat[i][k] + mat[j][k];
+                            mat[j][k] = mat[i][k] - mat[j][k];
+                            mat[i][k] = mat[i][k] - mat[j][k];
+                        }
+                    }
+                }
+            }
+        };
+
+        void gaussianElimination() {
+            /* performing Gaussian elimination */
+            int i, j, k;
+            for (i = 0; i < dim - 1; i++)
+            {
+                for (j = i + 1; j < dim; j++)
+                {
+                    float f = mat[j][i] / mat[i][i];
+                    for (k = 0; k < dim + 1; k++)
+                    {
+                        mat[j][k] = mat[j][k] - f * mat[i][k];
+                    }
+                }
+            }
+        }
+
+        void backSub() {
+            int i, j;
+            /* Backward substitution for discovering values of unknowns */
+            for (i = dim - 1; i >= 0; i--)
+            {
+                res[i] = mat[i][dim];
+
+                for (j = i + 1; j < dim; j++)
+                {
+                    if (i != j)
+                    {
+                        res[i] = res[i] - mat[i][j] * res[j];
+                    }
+                }
+                res[i] = res[i] / mat[i][i];
+            }
+        }
+
+        //Utility get dim
+        int getBidimesionDimension()
+        {
+            return dim;
+        }
+
+        //Show linear sys solutions
+        void showSystemSolutions() {
+            int i;
+            cout << "\nThe values of unknowns for the above equations=>\n";
+            for (i = 0; i < dim; i++)
+            {
+                cout << res[i] << "\n";
+            }
+
+        }
+
+        ~Matrix() {
+            cout << "\nMatrix destroyed\n";
+        }
+};
 
 
-// function to get matrix content 
-void gaussianElimination(double mat[N][N + 1])
-{
-    /* reduction into r.e.f. */
-    int singular_flag = forwardElim(mat);
 
-    /* if matrix is singular */
-    if (singular_flag != -1)
-    {
-        cout<<"Singular Matrix.\n";
 
-        /* if the RHS of equation corresponding to
-           zero row  is 0, * system has infinitely
-           many solutions, else inconsistent*/
-        if (mat[singular_flag][N])
-            cout<<"Inconsistent System.";
-        else
-            cout<<"May have infinitely many "
-                "solutions.";
 
-        return;
-    }
-
-    /* get solution to system and print it using
-       backward substitution */
-    backSub(mat);
-}
 
 
 int main()
 {
-    /* input matrix */
-    double mat[N][N + 1] = { 
-                          {3.0, 0.0, 4.0, 5.0, 0.0, 8.0},
-                          {0.0, 8.0, 0.0, 4.0, 2.0, 6.0},
-                          {0.0, 0.0, 2.0, 9.0, 3.0, 7.0}, 
-                          {0.0, 0.0, 0.0, 0.0, 9.0, 5.0}
-    };
+    //int i, j, k, n;
+    int dim;
 
-    gaussianElimination(mat);
+    Matrix linearSystem;
+
+    dim = linearSystem.LoadDim();
+    linearSystem.LoadBidimensionalArray(dim);
+
+    //Debug
+    /*cout << "\n ===== Debug Output =====\n";
+    linearSystem.DisplayBidimensional();
+    cout << "\n ===== End Debug Output =====\n";*/
+
+
+    linearSystem.sawpRow();
+    linearSystem.gaussianElimination();
+
+    //Debug
+    /*cout << "\n ===== Debug Output =====\n";
+    linearSystem.DisplayBidimensional();
+    cout << "\n ===== End Debug Output =====\n";*/
+
+
+    linearSystem.backSub();
+    linearSystem.showSystemSolutions();
+    system("PAUSE");
 
     return 0;
 }

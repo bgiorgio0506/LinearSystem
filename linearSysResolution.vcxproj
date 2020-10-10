@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="linearSysResolution.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="linearSysResolution.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
